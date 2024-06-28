@@ -1,8 +1,13 @@
 const http = require('http');
 const { handleGetRequest, handlePostRequest } = require('./requestHandler');
 const axios = require('axios');
+const EventEmitter = require('events');
+
+class RequestEmitter extends EventEmitter {}
+const requestEmitter = new RequestEmitter();
 
 const server = http.createServer((req, res) =>{
+    requestEmitter.emit('requestReceived', req.url);
     if (req.method === 'GET') {
         handleGetRequest(req, res);
     } else if (req.method === 'POST') {
@@ -24,11 +29,15 @@ async function fetchData() {
     try {
         const response = await axios.get(apiUrl);
         console.log('Data fetched successfully');
-        console.log(response.data); // Logs the data from the API
+        // console.log(response.data); // Logs the data from the API
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
-
 // Call the fetchData function
 fetchData();
+
+
+requestEmitter.on('requestReceived', (url) => {
+    console.log(`Received request for: ${url}`);
+});
