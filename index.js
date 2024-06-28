@@ -1,5 +1,6 @@
 const http = require('http');
 const { handleGetRequest, handlePostRequest } = require('./requestHandler');
+const axios = require('axios');
 
 const server = http.createServer((req, res) =>{
     if (req.method === 'GET') {
@@ -16,3 +17,7 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}/`);
 });
+
+fetch('https://jsonplaceholder.typicode.com/todos/1')
+      .then(response => response.json())
+      .then(json => console.log(json))
