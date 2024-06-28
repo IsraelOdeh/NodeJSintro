@@ -18,6 +18,17 @@ server.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}/`);
 });
 
-fetch('https://jsonplaceholder.typicode.com/todos/1')
-      .then(response => response.json())
-      .then(json => console.log(json))
+
+const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+async function fetchData() {
+    try {
+        const response = await axios.get(apiUrl);
+        console.log('Data fetched successfully');
+        console.log(response.data); // Logs the data from the API
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+// Call the fetchData function
+fetchData();
