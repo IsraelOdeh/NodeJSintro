@@ -1,9 +1,15 @@
 const http = require('http');
+const { handleGetRequest, handlePostRequest } = require('./requestHandler');
 
-const fs = require("fs")
 const server = http.createServer((req, res) =>{
-    res.writeHead(200,{'Content-Type' : 'text/plain'});
-    res.end('Hello,World!');
+    if (req.method === 'GET') {
+        handleGetRequest(req, res);
+    } else if (req.method === 'POST') {
+        handlePostRequest(req, res);
+    } else {
+        res.writeHead(405, { 'Content-Type': 'text/plain' });
+        res.end('Method Not Allowed');
+    }
 });
 
 const PORT = process.env.PORT || 3000;
