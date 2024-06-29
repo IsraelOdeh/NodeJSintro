@@ -4,11 +4,85 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>My sample NodeJs project</title>
+        <link rel="icon" href="https://plpacademy.powerlearnproject.org/static/media/logo.879e78bc92c159fe77f0.png">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
 
-    <body style="background-color: aqua;">
+    <body class="dark">
+        <div class="text-center">
+            <img src="https://plpacademy.powerlearnproject.org/static/media/logo.879e78bc92c159fe77f0.png">
+            <h1 class="display-5 fw-bold text-body-emphasis">A sample nodejs app</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4"> utilizing setting up a node server,the use of modules,and
+                    retrieval of data from external api.</p>
+            </div>
+
+        </div>
+        <table class=" table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        User ID
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Body
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="data">
+
+            </tbody>
+        </table>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 
     </body>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/posts');
+                const data = await response.json();
+                console.log(data); // Log the received data to the console (optional)
+                const table = document.getElementById("data")
+
+                data.forEach(element => {
+                    const row = document.createElement("tr")
+                    const userrow = document.createElement("td")
+                    userrow.appendChild(document.createTextNode(element.userId))
+                    const idrow = document.createElement("td")
+                    idrow.appendChild(document.createTextNode(element.id))
+                    const title = document.createElement("td")
+                    title.appendChild(document.createTextNode(element.title))
+                    const body = document.createElement("td")
+                    body.appendChild(document.createTextNode(element.body))
+
+                    row.appendChild(userrow)
+                    row.appendChild(idrow)
+                    row.appendChild(title)
+                    row.appendChild(body)
+
+                    table.appendChild(row)
+
+                });
+
+
+                // document.getElementById('data').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        fetchData();
+    </script>
 
 </html>
